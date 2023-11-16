@@ -17,9 +17,9 @@
               <th>Autor</th>
               <th>Categoría de la noticia</th>
               <th>Fecha de publicación</th>
-              <th>Días de publicación</th>
               <th>Estado de la noticia</th>
-              <th>Opciones</th>
+              <th>Visualizar</th>
+              <th>Comentarios</th>
             </tr>
           </thead>
           <tbody>
@@ -27,13 +27,18 @@
               <td>{{ noticia.autor }}</td>
               <td>{{ noticia.category }}</td>
               <td>{{ noticia.time }}</td>
-              <td>{{ noticia.diasPublicacion }}</td>
               <td>{{ getStatus(noticia.estado) }}</td>
+              <td>
+              <v-btn @click="abrirModal2(index)" color="primary">
+                <b-icon icon="Eye-fill" font-scale="2" style="color:rgb(255, 255, 255)"></b-icon>Visualizar
+            </v-btn>
+            </td>
               <td>
                 <v-btn color="primary" v-if="noticia.estado === '6502fc246f68e90bf2ac9222'" @click="abrirModal(index)"
                   class="boton-editar">
                   <b-icon icon="Eye-fill" font-scale="2" style="color:rgb(255, 255, 255)"></b-icon> Comentarios </v-btn>
-              </td>
+                  <h6 v-if="noticia.estado !== '6502fc246f68e90bf2ac9222'">Sin comentarios</h6>
+                </td>
             </tr>
           </tbody>
         </table>
@@ -50,17 +55,64 @@
           <div class="con-footer d-flex justify-content-end">
             <router-link :to="'/dashboard/welcome/creanotice/' + noticiaSeleccionada._id"> <vs-button class="mr-2"
                 color="#00BA00">Editar noticia</vs-button></router-link>
-            <vs-button color="#FF3232" @click="borrar(index)">Cancelar noticia</vs-button>
+            <vs-button color="#FF3232" @click="deleteNotice(noticiaSeleccionada._id)">Cancelar noticia</vs-button>
           </div>
         </template>
 
       </vs-dialog>
 
+      <vs-dialog v-if="modalActivo2" not-center v-model="modalActivo2" class="dialog">
+      <template #header>
+        <strong>
+          <h4 class="not-margin">{{ noticiaSeleccionada.title }}</h4>
+        </strong>
+      </template>
+      <template #default>
+        <div class="con-content">
+          <table class="table">
+            <tr>
+              <td><strong>Autor:</strong></td>
+              <td>{{ noticiaSeleccionada.autor }}</td>
+            </tr>
+            <tr>
+              <td><strong>Categoría:</strong></td>
+              <td>{{ noticiaSeleccionada.category }}</td>
+            </tr>
+            <tr>
+              <td><strong>Fecha de Publicación:</strong></td>
+              <td>{{ noticiaSeleccionada.time }}</td>
+            </tr>
+            <tr>
+              <td><strong>Resumen:</strong></td>
+              <td v-html="processedAbstract"></td>
+            </tr>
+            <tr>
+              <td><strong>Contenido:</strong></td>
+              <td v-html="processedContent"></td>
+            </tr>
+            <tr>
+              <td><strong>Imágen:</strong></td>
+              <td>
+                <v-img style="cursor: pointer;" height="150px" :src="noticiaSeleccionada.images"
+                  @click="abrirModalImagen"></v-img>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </template>
+      <template #footer>
+        <div class="con-footer d-flex justify-content-end">
+          <vs-button class="mr-2" color="#00BA00" @click="modalActivo = false">Cerrar</vs-button>
+        </div>
+      </template>
+
+    </vs-dialog>
+
       <vs-dialog v-if="modalImage" not-center v-model="modalImage" class="dialog">
         <template #default>
           <div class="con-content">
             <v-img height="auto" :src="image"></v-img>
-          </div>
+          </div> 
         </template>
 
       </vs-dialog>
@@ -89,12 +141,19 @@ export default {
       categorias: [],
       idNoticia: '',
       modalActivo: false,
+      modalActivo2: false,
       modalImage: false,
       noticiaSeleccionada: null,
       image: null,
       currentIndex: null,
       mensaje: '',
       showModal: false,
+      items: [
+          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+          { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
+          { age: 38, first_name: 'Jami', last_name: 'Carney' }
+        ]
     };
   },
   mounted() {
@@ -152,6 +211,13 @@ export default {
       console.log('currentIndex', this.currentIndex)
       this.modalActivo = true
     },
+    abrirModa2(index) {
+      this.noticiaSeleccionada = this.noticias[index]
+      this.currentIndex = index; 
+      console.log('noticiaSeleccionada', this.noticiaSeleccionada)
+      console.log('currentIndex', this.currentIndex)
+      this.modalActivo2 = true
+    },
 
     abrirModalImagen() {
       this.image = this.noticiaSeleccionada.images;
@@ -182,6 +248,30 @@ export default {
           })
       }
     },
+
+    deleteNotice(id) {
+      const idUser = id
+      console.log('id', idUser)
+      axios.delete(`http://localhost:3001/deletenotices/${idUser}`)
+        .then(response => {
+          console.log(response.data);
+          console.log('noticia eliminada', response)
+            this.mensaje = 'Noticia eliminada'
+            this.showModal = true
+
+            setTimeout(() => {
+              this.showModal = false;
+              this.mensaje = '';
+            }, 3000);
+            this.getNotices()
+            this.modalActivo = false
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    // 
 
     realizarBusqueda() {
       if (this.busqueda) {

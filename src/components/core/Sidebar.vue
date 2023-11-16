@@ -76,22 +76,24 @@ export default {
     menu: [],
   }),
   mounted() {
-    const rolEspecifico = "638d53bbfe21f8063ca25b93";
+    const rolEspecifico = "6525b7b49b07590f3ba23626";
     const isEditor = this.$store.state.userData.isEditor;
     const isRedactor = this.$store.state.userData.isRedactor;
+    
+
+
     this.menu = this.$store.state.userData.menu;
 
-    console.log("rol", this.$store.state.userData.roles);
+    console.log("rol", this.$store.state.userData.rol);
     console.log("editor", this.$store.state.userData.isEditor);
     console.log("redactor", this.$store.state.userData.isRedactor);
 
-    if (this.$store.state.userData.roles.includes(rolEspecifico)) {
+    if (this.$store.state.userData.rol.includes(rolEspecifico)) {
       if (isEditor && isRedactor) {
         this.menu = this.$store.state.userData.menu;
       } else {
         if (!isEditor && !isRedactor) {
           this.menu = this.menu.filter(item => item.title !== 'Noticias')
-
         } else {
           if (isEditor) {
             this.menu[2].child = this.menu[2].child.filter(item => item.title !== 'Crear' && item.title !== 'Listar');
@@ -99,6 +101,7 @@ export default {
 
           if (isRedactor) {
             this.menu[2].child = this.menu[2].child.filter(item => item.title !== 'Editar');
+
           }
         }
       }

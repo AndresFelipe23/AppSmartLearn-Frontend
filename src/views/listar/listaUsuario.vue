@@ -663,6 +663,9 @@ export default {
         this.desactivarRolEditor()
         this.desactivarRolRedactor()
       }
+      this.cargar()
+      this.activeroles = false
+
     },
 
     openNotification(position = null) {

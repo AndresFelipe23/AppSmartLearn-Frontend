@@ -16,7 +16,6 @@
             <th>Autor</th>
             <th>Categoría de la noticia</th>
             <th>Fecha de publicación</th>
-            <th>Días de publicación</th>
             <th>Estado de la noticia</th>
             <th>Opciones</th>
           </tr>
@@ -26,7 +25,6 @@
             <td>{{ noticia.autor }}</td>
             <td>{{ noticia.category }}</td>
             <td>{{ noticia.time }}</td>
-            <td>{{ noticia.diasPublicacion }}</td>
             <td>{{ getStatus(noticia.estado) }}</td>
             <td>
               <v-btn @click="abrirModal(index)" color="primary">
@@ -198,6 +196,16 @@ export default {
       this.modalActivo = true
     },
 
+
+    abrirModa2(index) {
+      this.noticiaSeleccionada = this.noticias[index]
+      this.currentIndex = index; 
+      console.log('noticiaSeleccionada', this.noticiaSeleccionada)
+      console.log('currentIndex', this.currentIndex)
+      this.modalActivo2 = true
+    },
+
+    
     abrirModalImagen() {
       this.image = this.noticiaSeleccionada.images;
       this.modalImage = true;

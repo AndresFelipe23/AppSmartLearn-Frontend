@@ -373,7 +373,7 @@ export default {
                             "task_description": this.tareaDescription,
                             "deliveryDateInicial": this.tareaDateinicial,
                             "deliveryDateFinal": this.tareaDatefinal,
-                            "task_status": this.tareaState,
+                            // "task_status": this.tareaState,
                             "archivo": response.data.nU,
                             "people_id": this.people_id
                           };
