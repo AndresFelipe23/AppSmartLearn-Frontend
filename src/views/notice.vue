@@ -1,46 +1,44 @@
 <template>
   <div>
+    <v-carousel cycle height="auto" hide-delimiters show-arrows-on-hover> <!--SECCION DE CARUSEL PARA LAS NOTICIAS-->
+      <!-- Slide para cada una de las 5 noticias más recientes -->
+      <v-carousel-item v-for="notices in latestNotices" :key="notices.id">
+        <v-card @click="openModal(notices)" hover style="background: rgb(247, 247, 247);" outlined class="latest-notice">
+          <v-row no-gutters class="cols-2 mx-auto">
+            <v-col class="col-5 contenedor" sm="8" md="5">
+              <v-img class="imagen" :src="notices.images"></v-img>
+            </v-col>
+            <v-col class="col-7">
+              <v-card-title class="text-uppercase text-justify">{{
+                notices.title
+              }}</v-card-title>
+              <v-card-subtitle class="text-caption">
+                <p class="my-0 py-0">
+                  {{ notices.autor }} / {{ notices.category }} -
+                  {{ notices.time }}
+                </p>
+              </v-card-subtitle>
+
+              <v-card-text class="text--primary">
+                <div v-html="notices.abstract"></div>
+              </v-card-text>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-carousel-item>
+    </v-carousel>
     <v-container class="body-component" fluid>
       <v-row class="Principal cols-2 my-2">
         <v-col class="col-11.5 mx-4">
-          <v-row class="border">
-            <v-col>
-              <v-carousel cycle height="300" hide-delimiters show-arrows-on-hover>
-                <!-- Slide para cada una de las 5 noticias más recientes -->
-                <v-carousel-item v-for="notices in latestNotices" :key="notices.id">
-                  <v-card @click="openModal(notices)" hover color="light-blue lighten-5" outlined class="latest-notice">
-                    <v-row no-gutters class="cols-2 mx-auto">
-                      <v-col class="col-5 contenedor" sm="8" md="5">
-                        <v-img class="imagen" :src="notices.images"></v-img>
-                      </v-col>
-                      <v-col class="col-7">
-                        <v-card-title class="text-uppercase text-justify">{{
-                          notices.title
-                        }}</v-card-title>
-                        <v-card-subtitle class="text-caption">
-                          <p class="my-0 py-0">
-                            {{ notices.autor }} / {{ notices.category }} -
-                            {{ notices.time }}
-                          </p>
-                        </v-card-subtitle>
-
-                        <v-card-text class="text--primary">
-                          <div v-html="notices.abstract"></div>
-                        </v-card-text>
-                      </v-col>
-                    </v-row>
-                  </v-card>
-                </v-carousel-item>
-              </v-carousel>
-            </v-col>
-          </v-row>
-
-          <v-row class="my-4 border">
+          
+          <v-row class="my-4"> <!--SECCION DE CARD PARA LAS NOTICIAS-->
             <v-card max-width="270" hover outlined v-for="notice in getNoticesFile" :key="notice._id"
               class="notice-card my-2 mx-auto">
               <v-img height="150px" :src="notice.images"></v-img>
 
-              <v-card-title class="text-uppercase text-justify text-subtitle-2">{{ notice.title }}</v-card-title>
+              <v-card-title class="text-uppercase text-justify text-subtitle-2">{{
+                notice.title
+              }}</v-card-title>
               <v-card-subtitle class="text-caption">
                 <p class="my-0 py-0">
                   {{ notice.autor }} / {{ notice.category }} / {{ notice.time }}
@@ -60,56 +58,57 @@
           <v-snackbar v-model="hasSaved" :timeout="5000" absolute bottom center color="green">
             {{ msg }}
           </v-snackbar>
-          <v-dialog transition="dialog-bottom-transition" v-model="modalVisible">
-            <v-card>
-              <v-toolbar class="hidden-xs-only">
-                <v-btn icon @click="closeModal"><v-icon>mdi-close-circle</v-icon></v-btn>
-                <!--  <v-btn  icon>
+          <v-dialog transition="dialog-bottom-transition" v-model="modalVisible" fullscreen :scrim="false" >
+              <v-card>
+                
+                <v-toolbar class="hidden-xs-only">
+                  <v-btn icon @click="closeModal"><v-icon>mdi-close-circle</v-icon></v-btn>
+                  <!--  <v-btn  icon>
         <v-icon class="mr-0">mdi-close-circle</v-icon>
       </v-btn>
       <v-btn icon class="mr-0">
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn> -->
 
-                <v-spacer></v-spacer>
-              </v-toolbar>
-              <v-container class="grey lighten-5">
-                <v-row align="center">
-                  <v-col>
-                    <v-card-title class="text-uppercase text-h4 align-center justify-center">{{
-                      selectedNotice ? selectedNotice.title : ""
-                    }}</v-card-title>
-                  </v-col>
-                </v-row>
-                <v-row no-gutters>
-                  <v-col cols="10" sm="6">
-                    <img style="max-width: 100%; max-height: 600px" class="content"
-                      :src="selectedNotice ? selectedNotice.images : ''" />
-                  </v-col>
-                  <v-col cols="auto">
-                    <v-card width="580" height="327" class="overflow-auto">
-                      <v-card-text>
-                        <div class="content" v-html="selectedNotice ? selectedNotice.content : ''"></div>
-                      </v-card-text>
-                    </v-card>
-
-                  </v-col>
-                </v-row>
-              </v-container>
-              <!--  <v-card-title class="text-uppercase">{{ selectedNotice ? selectedNotice.title : '' }}</v-card-title> -->
-              <v-row>
-                <!--                             <v-col class="mx-5">
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+                
+                <!--  <v-card-title class="text-uppercase">{{ selectedNotice ? selectedNotice.title : '' }}</v-card-title> -->
+                <v-row>
+                  <!--<v-col class="mx-5">
                                 <img style="max-width:100%; max-height: 600px;" class="content" :src="selectedNotice ? selectedNotice.images: ''">
                             </v-col> -->
-              </v-row>
-              <v-row>
-                <v-col class="mx-5">
-                  <!--                                 <div class="content" v-html="selectedNotice ? selectedNotice.content: ''"></div>
+                </v-row>
+
+                <v-container class="lighten-5 mt-2" >
+                  <v-row align="center">
+                    <v-col>
+                      <v-card-title class="text-uppercase text-h4 align-center justify-center">{{ selectedNotice ?
+                        selectedNotice.title : "" }}</v-card-title>
+                    </v-col>
+                  </v-row>
+                  <v-row no-gutters>
+                    <v-col cols="10" sm="6">
+                      <img style="max-width: 100%; max-height: 100%" class="content"
+                        :src="selectedNotice ? selectedNotice.images : ''" />
+                    </v-col>
+                    <v-col cols="auto mt-4 ml-2">
+                      <v-card width="700" height="327" class="overflow-auto" variant="tonal">
+                        <v-card-text>
+                          <div class="content" v-html="selectedNotice ? selectedNotice.content : ''"></div>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-row>
+                  <v-col class="mx-5">
+                    <!--                                 <div class="content" v-html="selectedNotice ? selectedNotice.content: ''"></div>
  -->
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-dialog>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-dialog>
         </v-col>
       </v-row>
     </v-container>
@@ -183,7 +182,7 @@ export default {
     async getNotices() {
       try {
         const response = await axios.get("http://localhost:3001/notices");
-        this.getNoticesFile = response.data.filter(item => item.aprobada === true);
+        this.getNoticesFile = response.data.filter((item) => item.aprobada === true);
         this.latestNoticeFromData = this.latestNotice; // Actualizar la noticia más reciente en data
         console.log(this.getNoticesFile);
       } catch (error) {
@@ -195,21 +194,20 @@ export default {
 </script>
 <style scoped>
 .content img {
-  margin: 10;
-  width: 100px;
-  height: 100px;
-
+  margin-top: 10px;
+  width: 100%;
+  height: 100%;
 }
 
 .contenedor {
-  width: 300px;
-  height: 200px;
-  overflow: hidden;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 .imagen {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Asegura que toda la imagen se muestre, aunque pueda dejar espacio en blanco */
+  width: 100%; /* Asegura que la imagen ocupe todo el ancho disponible */
+  height: 100%; /* Asegura que la imagen ocupe todo el alto disponible */
 }
 </style>

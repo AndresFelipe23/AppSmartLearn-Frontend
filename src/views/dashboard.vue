@@ -43,7 +43,6 @@ import Sidebar from '../components/core/Sidebar.vue'
 <style>
 
 #inspire{
-  background-image:url("../assets/fondo.png");
   background-size: 100% 100%;
   background-attachment: fixed;
   margin:0; 

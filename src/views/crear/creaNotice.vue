@@ -1,94 +1,83 @@
 <template>
     <div>
 
-    <v-container class="body-component">
-        <v-row>
-            <v-col>
-                <v-form ref="form">
-                    <h1>TITULO</h1>
-                    <v-row>
-                        <v-col cols="12" md="4">
-                            <v-text-field v-model="noticeFile.title" label="Nombre del Articulo" :rules="titleRules" ></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <h3>Autor</h3>
-                    <v-row>
-                        <v-col cols="4" md="4">
-                            <v-text-field v-model="noticeFile.autor" prepend-icon="mdi-account" :rules="authorRules" label="Autor"></v-text-field>
-                        </v-col>
+        <v-container class="body-component">
+            <!-- Page title-->
+            <div class="border-bottom pt-5 mb-5">
+                <h1 class="mt-2 mt-md-4 mb-3 pt-5">Crear noticias</h1>
+                <div class="d-flex flex-wrap flex-md-nowrap justify-content-between">
+                    <p class="text-muted">Este módulo crea las noticias.</p>
 
-                        <v-col cols="4">
-                            <v-select :items="items" v-model="noticeFile.category" menu-props="auto" label="Categoria"
-                                hide-details prepend-icon="mdi-tag" single-line></v-select>
-                        </v-col>
-                        <v-col cols="4" md="4">
-                            <v-file-input
-                            v-model="noticeFile.images"
-                            label="Imagen de la noticia"
-                            variant="filled"
-                            accept="image/png, image/jpeg, image/bmp"
-                            prepend-icon="mdi-camera"></v-file-input>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-textarea
-                            label="Resumen"
-                            v-model="noticeFile.abstract"
-                            :rules="rulesAbstract"
-                            auto-grow
-                            outlined
-                            rows="1"
-                            row-height="15"
-                           >
-                        </v-textarea>
-                        </v-col>
-                    </v-row>
+                </div>
+            </div>
 
-                    <v-row>
-                        <v-col>
-                        <vue-editor 
-                            id="editor" 
-                            v-model="noticeFile.content"
-                            useCustomImageHandler
-                            @blur="extractTextFromContent"
-                            
-                        >       
-                        <!--@image-added="handleImageAdded"-->
-                        </vue-editor>        
-                            <div>
-                                <v-btn v-if="isEditing === false" block class="my-2" color="green" :disabled="!formIsValid" @click="submitForm">
-                                    <v-icon dark>mdi-cloud-upload</v-icon>
-                                    Enviar
-                                </v-btn>
-                                <v-btn v-if="isEditing" block class="my-2" color="blue" @click="EditarNoticias">
-                                <v-icon dark>mdi-pencil</v-icon>
-                                Editar Noticia
-                                </v-btn>
+            <div class="card box-shadow-sm">
+                <div class="card-header">
+                    <h5 style="margin-bottom: 0px;">Registro de noticias</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-12 form-group">
+                                    <label for="">Titulo de la noticia</label>
+                                    <input type="text" v-model="noticeFile.title" class="form-control"
+                                        placeholder="Titulo de la noticia" required>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="">Nombre del </label>
+                                    <input type="text" v-model="noticeFile.autor" class="form-control" placeholder="Autor"
+                                        required>
+                                </div>
+
+                                <div class="col-lg-4 form-group">
+                                    <label for="">Categoría</label>
+                                    <v-select :items="items" v-model="noticeFile.category" menu-props="auto"
+                                        label="Categoria" hide-details single-line variant="outlined"></v-select>
+
+                                </div>
+
+
+                                <div class="col-lg-12 form-group">
+                                    <label for="">Descripción corta</label>
+                                    <textarea v-model="noticeFile.abstract" :rules="rulesAbstract" auto-grow
+                                        class="form-control" placeholder="Titulo de producto" required rows="5"></textarea>
+                                </div>
+
+                                <div class="col-lg-12 form-group">
+                                    <vue-editor id="editor" v-model="noticeFile.content" useCustomImageHandler
+                                        @blur="extractTextFromContent">
+                                        <!--@image-added="handleImageAdded"-->
+                                    </vue-editor>
+                                </div>
+
                             </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <div class="col-lg-12 form-group">
+                                    <label for="">Imagen</label>
+                                    <div class="custom-file">
+                                        <v-file-input v-model="noticeFile.images" label="Imagen de la noticia"
+                                            variant="filled" accept="image/png, image/jpeg, image/bmp"
+                                            prepend-icon="mdi-camera"></v-file-input>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <img src="path-to-image" class="img-thumbnail" alt="Rounded image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn" style="background: #302387; color: #fff" @click="submitForm">Crear noticia</button>
+                </div>
 
-                            <v-snackbar
-                                v-model="snackbar"
-                                :timeout="timeout"
-                                centered
-                                tile
-                                outlined
-                                color="success"
-                                >
-                                {{ text }}
+            </div>
 
-
-                                </v-snackbar>
-                        </v-col>
-                    </v-row>
-                       
-            </v-form>
-            </v-col>
-        </v-row>
-
-
-    </v-container>
-</div>
+        </v-container>
+    </div>
 </template>
 
 <script>

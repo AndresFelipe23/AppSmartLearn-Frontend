@@ -478,6 +478,7 @@ ul {
   margin: 6px;
   transition: all 0.3s ease;
   text-decoration: underline;
+  border-radius: 10px;
 }
 
 .fondosubP {

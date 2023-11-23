@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app elevate-on-scroll elevation="8" relative>
     <template v-slot:img="{ props }">
-      <v-img v-bind="props" src="../../assets/Tulbar.png"></v-img>
+      <v-img v-bind="props" src="../../assets/img-v2/Tulbar-3.png"></v-img>
     </template>
     <v-app-bar-nav-icon class="btn" dark @click="procesa()"></v-app-bar-nav-icon>
 

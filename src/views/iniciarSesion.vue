@@ -1,125 +1,44 @@
 <template>
-<div class="background" fluid>
-  <v-app-bar  dark style="background: linear-gradient(90deg, rgba(0,112,192,0.75) 0%, rgba(112,48,160,0.5) 51%);">
-        <img src="../assets/logos/LogoBlanco.svg"  class="icon-move" width="40" alt="Logo" />
+  <div class="d-lg-flex half">
+    <div class="bg order-1 order-md-2">
+    </div>
+    <div class="contents order-2 order-md-1">
+      <div class="container">
+        <div class="row align-items-center justify-content-center">
+          <div class="col-md-7">
+            <div class="row align-items-center justify-content-center">
+              <img src="../assets/img-v2/logo.svg" alt="logo" style="width: 250px; height: 250px;">
+            </div>
+            <h3>Iniciar sesión en <strong>SmartLearn</strong></h3>
+            <p class="mb-4" style="color: black;">Software de gestión educatica, tiene como objetivo ofrecer a una
+              solución eficiente para la organización de tareas y la planificación de clases en el entorno académico.</p>
+            <form action="#" method="post">
+              <div class="form-group first">
+                <label for="username">Usuario</label>
+                <input v-model="usuario" type="text" class="form-control" placeholder="correo@gmail.com" id="username">
+              </div>
+              <div class="form-group last mb-3">
+                <label for="password">Contraseña</label>
+                <input v-model="contrasena" type="password" class="form-control" placeholder="Tu contraseña"
+                  id="password">
+              </div>
 
-      <v-toolbar-title class="font-weight-bold text-h5 mx-2">
-        Portal Educativo
-      </v-toolbar-title>
 
-      <v-spacer></v-spacer>
+              <div class="d-flex justify-content-center mt-3 login_container" v-if="prueba == 0">
+                <vs-button dark class="btn login_btn" @click="login">Iniciar Sesión</vs-button>
+              </div>
 
-     
-      
-      <v-spacer></v-spacer>
-  
-      <v-btn dark rounded text @click="dialog=true" class="mx-3 text-capitalize" >
-        <v-icon x-large>mdi-account</v-icon> Iniciar Sesión
-      </v-btn>
-
-  
-    </v-app-bar>
-
-
-<v-container fluid  > 
-      <div class="row">
-        <div class="col-6 my-auto">
-            <v-img
-              contain
-              max-height="500"
-              max-width="500"
-              class="mx-auto"
-              src="../assets/logos/Logotipo.svg"
-            >
-          </v-img>
-          <v-divider class="my-0"></v-divider>
-          <div class="container-md">
-            <p class="text-center purple--text text-h5"> Tiene como objetivo ofrecer a una solución eficiente para la organización de tareas y la planificación de clases en el entorno académico.</p>
-        </div>
-
-        </div>
-        <div class="col-6 my-auto">
-          <div class="">
-           <v-img 
-              class="mx-auto"
-              max-height="600"
-              max-width="600"
-              src="../assets/PortalEducativo.svg"
-           ></v-img>
-          </div> 
+              <v-snackbar v-model="isBusy" :timeout="2000" absolute bottom color="red">
+                {{ msg }}
+              </v-snackbar>
+            </form>
+          </div>
         </div>
       </div>
+    </div>
 
-  
-      <div class="fondo" >
-        <v-row>  
-          <v-dialog v-model="dialog" max-width="350" height="400"> 
-          <div class="container h-60">
-            <div class="d-flex justify-content-center h-50">
-              <div class="user_card">
-                <div class="d-flex justify-content-center">
-                  <div class="brand_logo_container">
-                    <img src="../assets/logos/LogoColor.svg" class="logo my-auto" width="130"  alt="Logo">
-                  </div>
-                </div>
-                <div class="d-flex justify-content-center form_container">
-                  <form v-on:submit.prevent>
-                    <div class="input-group mb-3">
-                      <div class="input-group-append">
-                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                      </div>
-                      <input v-model="usuario" type="text" name="" class="form-control input_user" placeholder="Nombre de Usuario">
-                    </div>
-                    <div class="input-group mb-2">
-                      <div class="input-group-append">
-                        <span class="input-group-text"><i class="fas fa-key"></i></span>
-                      </div>
-                      <input v-model="contrasena" type="password" name="" class="form-control input_pass" placeholder="Contraseña">
-                    </div>
-                      <div class="d-flex justify-content-center mt-3 login_container" v-if="prueba==0">
-                   <vs-button dark  class="btn login_btn" @click="login">Iniciar Sesión</vs-button>
-                   </div>
-                   <div class="d-flex justify-content-center mt-3 login_container" v-if="prueba==1">
-                    <vs-button class="btn login_btn"  loading  dark  >
-                      Iniciar Sesión
-                    </vs-button>
-                  </div>
-                   <v-snackbar
-                    v-model="isBusy"
-                    :timeout="2000"
-                    absolute
-                    bottom
-                
-                color="red"
-              >
-                {{msg}}
-              </v-snackbar>
-                  </form>
-                </div>
-                
-                
-                <div class="mt-4">
-                  <div class="d-flex justify-content-center links">
-                    <a href="#" style="color: black">¿Olvidaste tu contraseña?</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--  <vs-button flat color="#7d33ff" icon
-              @click="openNotification('top-center', '#7d33ff')">
-              <i class='bx bx-border-top' ></i>
-            </vs-button>-->
-          </v-dialog>
-  
-
-          </v-row>
-        </div>
-       
-      
-    </v-container>
   </div>
-  </template>
+</template>
   <script>
    /* data () {
         return {
@@ -213,6 +132,212 @@
   
   </script>
   <style scoped>
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #fff;
+}
+
+p {
+  color: #b3b3b3;
+  font-weight: 300;
+}
+
+.bg {
+  background-image: url('../assets/img-v2/bg-1.png');
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease;
+}
+
+a:hover {
+  text-decoration: none !important;
+}
+
+.content {
+  padding: 7rem 0;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+.half,
+.half .container>.row {
+  height: 100vh;
+  min-height: 700px;
+}
+
+@media (max-width: 991.98px) {
+  .half .bg {
+    height: 200px;
+  }
+}
+
+.half .contents {
+  background: #f6f7fc;
+}
+
+.half .contents,
+.half .bg {
+  width: 50%;
+}
+
+@media (max-width: 1199.98px) {
+
+  .half .contents,
+  .half .bg {
+    width: 100%;
+  }
+}
+
+.half .contents .form-control,
+.half .bg .form-control {
+  border: none;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  height: 54px;
+  background: #fff;
+}
+
+.half .contents .form-control:active,
+.half .contents .form-control:focus,
+.half .bg .form-control:active,
+.half .bg .form-control:focus {
+  outline: none;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.half .bg {
+  background-size: cover;
+  background-position: center;
+}
+
+.half a {
+  color: #888;
+  text-decoration: underline;
+}
+
+.half .btn {
+  height: 54px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.half .forgot-pass {
+  position: relative;
+  top: 2px;
+  font-size: 14px;
+}
+
+.control {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.control .caption {
+  position: relative;
+  top: .2rem;
+  color: #888;
+}
+
+.control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.control__indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #e6e6e6;
+  border-radius: 4px;
+}
+
+.control--radio .control__indicator {
+  border-radius: 50%;
+}
+
+.control:hover input~.control__indicator,
+.control input:focus~.control__indicator {
+  background: #ccc;
+}
+
+.control input:checked~.control__indicator {
+  background: #fb771a;
+}
+
+.control:hover input:not([disabled]):checked~.control__indicator,
+.control input:checked:focus~.control__indicator {
+  background: #fb8633;
+}
+
+.control input:disabled~.control__indicator {
+  background: #e6e6e6;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.control__indicator:after {
+  font-family: 'icomoon';
+  content: '\e5ca';
+  position: absolute;
+  display: none;
+  font-size: 16px;
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease;
+}
+
+.control input:checked~.control__indicator:after {
+  display: block;
+  color: #fff;
+}
+
+.control--checkbox .control__indicator:after {
+  top: 50%;
+  left: 50%;
+  margin-top: -1px;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.control--checkbox input:disabled~.control__indicator:after {
+  border-color: #7b7b7b;
+}
+
+.control--checkbox input:disabled:checked~.control__indicator {
+  background-color: #7e0cf5;
+  opacity: .2;
+}
     
     :root {
     --bd-azul: #59DCE4;
@@ -296,8 +421,9 @@
     
     .login_btn {
     width: 100%;
-    background: #0079C4 !important;
+    background: #4B52D1 !important;
     color: #FFFFFF !important;
+    font-weight: bold;
     
     }
     
