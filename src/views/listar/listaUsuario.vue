@@ -482,7 +482,8 @@ export default {
           minSize: 0,
           size: '9px',
           disable: false,
-          switchState: false,
+          switchState: null,
+          switchState2: null,
           idUser: null,
           isEditor: null,
           isRedactor: null
@@ -495,11 +496,15 @@ export default {
   },
   watch: {
     'stateRol.stateEditor': function (newVal) {
+      console.log('Nuevo valor de stateEditor:', newVal);
       this.switchState = newVal;
     },
     'stateRol.stateRedactor': function (newVal) {
+      console.log('Nuevo valor de stateRedactor:', newVal);
       this.switchState2 = newVal;
     }
+  
+
   },
 
 
@@ -596,9 +601,9 @@ export default {
 
     EditarRoles(id) {
       this.idUser = id;
+      this.getStatesRol(this.idUser)
       this.activeroles = true;
       console.log('id', this.idUser)
-      this.getStatesRol(this.idUser)
         ;
     },
     activarRolEditor() {
@@ -647,26 +652,23 @@ export default {
 
 
     guardarCambios() {
-      const switchActivos = this.switchState && this.switchState2;
-      const switchInactivos = !this.switchState && !this.switchState2;
-
-      if (switchActivos) {
-        this.activarRolEditor()
-        this.activarRolRedactor()
-      } else if (this.switchState) {
-        this.activarRolEditor()
-        this.desactivarRolRedactor()
-      } else if (this.switchState2) {
-        this.activarRolRedactor()
-        this.desactivarRolEditor()
-      } else if (switchInactivos) {
-        this.desactivarRolEditor()
-        this.desactivarRolRedactor()
-      }
-      this.cargar()
-      this.activeroles = false
-
-    },
+  if (this.switchState && this.switchState2) {
+    this.activarRolEditor();
+    this.activarRolRedactor();
+  } else if (this.switchState) {
+    this.activarRolEditor();
+    this.desactivarRolRedactor();
+  } else if (this.switchState2) {
+    this.activarRolRedactor();
+    this.desactivarRolEditor();
+  } else {
+    this.desactivarRolEditor();
+    this.desactivarRolRedactor();
+  }
+  this.getStatesRol()
+  this.activeroles = false;
+  this.cargar();
+},
 
     openNotification(position = null) {
       this.noti = this.$vs.notification({

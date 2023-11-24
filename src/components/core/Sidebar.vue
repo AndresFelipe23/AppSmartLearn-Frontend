@@ -1,8 +1,8 @@
 <template>
-  <v-navigation-drawer v-model="drawer" app class="fon" width="320px" color="#4B52D1">
+  <v-navigation-drawer v-model="drawer" app class="fon" width="320px">
     <!-- Cambia "primary" por el color que desees -->
     <vuescroll :ops="ops">
-      <v-img class="mt-2" contain height="120px" src="../../assets/img-v2/logo-3.svg"></v-img>
+      <v-img class="mt-2" style="margin-top: 50px;" contain height="120px" src="../../assets/img-v2/logo-3.svg"></v-img>
       <!-- <div style="text-align: center;">
         <label class="font-weight-bold letra text-h5 mx-2" for="">AULAS INTELIGENTES</label>
       </div> -->
@@ -113,10 +113,11 @@ export default {
 <style scoped>
 .fon {
   /* background-image:url("../../assets/images/sidebar/abstract4.jpg");*/
-  /* background-image: url("../../assets/fondosidebar.png"); */
-  background-size: 100% 100%;
+  background-image: url("../../assets/fondosidebarv7-2.svg");
+  background-size: cover;
   background-attachment: fixed;
   width: 100%;
+  background-position: center;
   height: 100%;
   margin: 0;
 

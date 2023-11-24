@@ -1,6 +1,6 @@
 <template>
   <div class="noticias-lista">
-    <div class="filtro">
+    <div class="filtro" v-if="noticias.length > 0">
       <input v-model="busqueda" type="text" class="v-input" placeholder="Buscar noticias" @input="realizarBusqueda">
       <select v-model="filtroCategoria" class="v-select categoria-select" @change="busquedaCategoria">
         <option value="">Todas las categorías</option>
@@ -10,7 +10,7 @@
     </div>
     <br>
     <div class="tabla-responsive">
-      <table>
+      <table v-if="noticias.length > 0">
         <thead>
           <tr>
             <th>Autor</th>
@@ -27,13 +27,16 @@
             <td>{{ noticia.time }}</td>
             <td>{{ getStatus(noticia.estado) }}</td>
             <td>
-              <v-btn @click="abrirModal(index)" color="primary">
+              <v-btn @click="abrirModal(index)" color="secondary">
                 <b-icon icon="Eye-fill" font-scale="2" style="color:rgb(255, 255, 255)"></b-icon>Visualizar
               </v-btn>
             </td>
           </tr>
         </tbody>
       </table>
+      <div v-if="noticias.length == 0">
+      <h2><strong>No hay noticias para editar</strong></h2>
+      </div>
     </div>
     <vs-dialog v-if="modalActivo" not-center v-model="modalActivo" class="dialog">
       <template #header>
@@ -224,6 +227,7 @@ export default {
             console.log('noticia aprobada', response)
             this.mensaje = 'Noticia aprobada'
             this.showModal = true
+            this.modalActivo = false
 
             setTimeout(() => {
               this.showModal = false;
@@ -259,6 +263,7 @@ export default {
             console.log('noticia rechazada', response)
             this.mensaje = 'Noticia rechazada'
             this.showModal = true
+            this.modalActivo = false
 
             setTimeout(() => {
               this.showModal = false;
@@ -340,7 +345,7 @@ td {
 }
 
 th {
-  background-color: #0079c4;
+  background-color: #4c38ff;
   /* Cambia el color de fondo del encabezado */
   color: white;
   /* Cambia el color del texto del encabezado */

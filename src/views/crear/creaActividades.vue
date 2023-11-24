@@ -365,18 +365,20 @@ export default {
                         if (response.status == "200") {
                           console.log(response.data)
                           let exercise = {
-                            //   "task_asignature": this.TareaItemsAsignature,
+                            //"task_asignature": this.TareaItemsAsignature,
                             "task_asignature": this.asignatura._id._id,
+                            "Course": this.TareaItemsCurse,
                             "topic": this.TareaItemsCurse,
                             "task_type": this.tareaType,
                             "task_title": this.tareaTitle,
                             "task_description": this.tareaDescription,
                             "deliveryDateInicial": this.tareaDateinicial,
                             "deliveryDateFinal": this.tareaDatefinal,
-                            // "task_status": this.tareaState,
+                            //"task_status": this.tareaState,
                             "archivo": response.data.nU,
                             "people_id": this.people_id
                           };
+                          console.log("Paquete ejercicios", exercise)
                           // --------------- Enviado de datos de la tarea --------------- //     
                           axios.post('http://localhost:3001/exercises', exercise).then((response) => {
                             console.log(response)

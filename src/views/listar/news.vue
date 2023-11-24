@@ -1,6 +1,6 @@
 <template>
   <div class="noticias-lista">
-    <div class="filtro">
+    <div class="filtro" v-if="noticias.length > 0">
       <input v-model="busqueda" type="text" class="v-input" placeholder="Buscar noticias" @input="realizarBusqueda">
       <select v-model="filtroCategoria" class="v-select categoria-select" @change="busquedaCategoria">
         <option value="">Todas las categorías</option>
@@ -11,7 +11,7 @@
     <br>
     <div>
       <div class="tabla-responsive">
-        <table>
+        <table v-if="noticias.length > 0">
           <thead>
             <tr>
               <th>Autor</th>
@@ -29,19 +29,22 @@
               <td>{{ noticia.time }}</td>
               <td>{{ getStatus(noticia.estado) }}</td>
               <td>
-              <v-btn @click="abrirModal2(index)" color="primary">
-                <b-icon icon="Eye-fill" font-scale="2" style="color:rgb(255, 255, 255)"></b-icon>Visualizar
+              <v-btn @click="abrirModal2(index)" color="secondary">
+                <b-icon icon="Eye-fill" font-scale="2" style="color:rgb(255, 255, 255)"></b-icon>
             </v-btn>
             </td>
               <td>
-                <v-btn color="primary" v-if="noticia.estado === '6502fc246f68e90bf2ac9222'" @click="abrirModal(index)"
+                <v-btn color="secondary" v-if="noticia.estado === '6502fc246f68e90bf2ac9222'" @click="abrirModal(index)"
                   class="boton-editar">
                   <b-icon icon="Eye-fill" font-scale="2" style="color:rgb(255, 255, 255)"></b-icon> Comentarios </v-btn>
                   <h6 v-if="noticia.estado !== '6502fc246f68e90bf2ac9222'">Sin comentarios</h6>
                 </td>
             </tr>
           </tbody>
-        </table>
+        </table>  
+        <div v-if="noticias.length == 0">
+      <h2><strong>No has creado noticias</strong></h2>
+      </div>
       </div>
       <vs-dialog v-if="modalActivo" not-center v-model="modalActivo" class="dialog">
         <template #header>
@@ -339,7 +342,7 @@ td {
 }
 
 th {
-  background-color: #0079c4;
+  background-color: #4c38ff;
   /* Cambia el color de fondo del encabezado */
   color: white;
   /* Cambia el color del texto del encabezado */
